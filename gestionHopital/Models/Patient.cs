@@ -1,28 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gestionHopital.Models
-
-
 {
-
     public enum Genre
     {
-        H,
+        M,
         F
     }
+
     public class Patient
     {
-         [Key]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_patient { get; set; }
-      
+
         public int UtilisateurID { get; set; }
+
         [ForeignKey("UtilisateurID")]
         public Utilisateur? Utilisateur { get; set; }
-
-        [Required]
-        public DateOnly DateDeNaissance { get; set; }
 
         [Required]
         [EnumDataType(typeof(Genre))]
@@ -30,9 +26,6 @@ namespace gestionHopital.Models
 
         public string Adresse { get; set; }
 
-        [Phone]
-        public string Telephone { get; set; }
-
-        public string Historiqueeédical { get; set; }
+        public string Historiquemedical { get; set; }
     }
 }

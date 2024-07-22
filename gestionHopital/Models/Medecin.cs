@@ -8,11 +8,14 @@ namespace gestionHopital.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_medecin { get; set; }
-        public string Specialisation { get; set; } 
-        public DateOnly DateNaissance { get; set; }
 
-       
+        public int UtilisateurID { get; set; }
 
+        [ForeignKey("UtilisateurID")]
+        public Utilisateur? Utilisateur { get; set; }
 
+        public string Specialisation { get; set; }
+
+        
     }
 }

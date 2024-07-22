@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace gestionHopital.Models
 {
-
     public enum StatutRendezVous
     {
-        Planifié,
-        Complété,
-        Annulé
+        Planifie,
+        Complete,
+        Annule
     }
+
     public class RendezVous
     {
         [Key]
@@ -17,8 +17,9 @@ namespace gestionHopital.Models
         public int Id_RendezVous { get; set; }
 
         public int Id_patient { get; set; }
-        [ForeignKey("id_patient")]
+        [ForeignKey("Id_patient")]
         public Patient? Patient { get; set; }
+
         public int Id_Medecin { get; set; }
         [ForeignKey("Id_Medecin")]
         public Medecin? Medecin { get; set; }
