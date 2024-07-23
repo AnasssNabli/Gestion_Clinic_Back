@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestionhopital\\gestionhopital.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\gestionhopital.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestionhopital\\models\\medecin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\models\\medecin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestionhopital\\gestionhopital.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\gestionhopital.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestionhopital\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -138,11 +138,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 18,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Bookmark",
@@ -264,7 +268,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "gestionHopital.csproj",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\gestionHopital.csproj",
               "RelativeDocumentMoniker": "gestionHopital\\gestionHopital.csproj",
@@ -323,15 +327,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Medecin.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\Models\\Medecin.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Medecin.cs",
               "ToolTip": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\Models\\Medecin.cs",
               "RelativeToolTip": "gestionHopital\\Models\\Medecin.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-21T23:59:39.677Z"
+              "WhenOpened": "2024-07-21T23:59:39.677Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
