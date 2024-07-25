@@ -34,6 +34,7 @@ namespace gestionHopital.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cin = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateNaissance = table.Column<DateOnly>(type: "date", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

@@ -12,7 +12,7 @@ using gestionHopital.Data;
 namespace gestionHopital.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240722213102_initial migration")]
+    [Migration("20240725190537_initial migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -483,6 +483,10 @@ namespace gestionHopital.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Cin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

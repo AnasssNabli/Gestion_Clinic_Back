@@ -41,6 +41,7 @@ namespace gestionHopital.Controllers
                 Email = model.Email,
                 Nom = model.Nom,
                 Prenom = model.Prenom,
+                Cin = model.Cin,
                 Telephone = model.Telephone,
                 DateNaissance = DateOnly.Parse(model.DateNaissance)
             };
@@ -165,7 +166,8 @@ namespace gestionHopital.Controllers
 
         [Required]
         public string Prenom { get; set; }
-
+        [Required]
+        public string Cin { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
