@@ -5919,19 +5919,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ahmed soubai\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\gestionHopital.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\gestion_hopital_back\\gestionHopital\\gestionHopital.csproj",
       "projectName": "gestionHopital",
-      "projectPath": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\gestionHopital.csproj",
-      "packagesPath": "C:\\Users\\Ahmed soubai\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\gestionHopital\\obj\\",
+      "projectPath": "C:\\Users\\HP\\Desktop\\gestion_hopital_back\\gestionHopital\\gestionHopital.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\gestion_hopital_back\\gestionHopital\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Ahmed soubai\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
