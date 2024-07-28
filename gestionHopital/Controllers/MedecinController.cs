@@ -3,6 +3,7 @@ using gestionHopital.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace gestionHopital.Controllers
@@ -23,6 +24,7 @@ namespace gestionHopital.Controllers
         {
             var medecins = await _context.Medecins
                                          .Include(m => m.Utilisateur)
+                                         .Include(m => m.Departement)
                                          .ToListAsync();
 
             // Map to anonymous type to remove potential circular references
@@ -39,7 +41,12 @@ namespace gestionHopital.Controllers
                     m.Utilisateur.DateNaissance,
                     m.Utilisateur.Email
                 },
-                Specialisation = m.Specialisation
+                Specialisation = m.Specialisation,
+                DepartementID = m.DepartementID,
+                Departement = m.Departement == null ? null : new
+                {
+                    m.Departement.Nom
+                }
             });
 
             return Ok(result);
@@ -50,6 +57,7 @@ namespace gestionHopital.Controllers
         {
             var medecin = await _context.Medecins
                                         .Include(m => m.Utilisateur)
+                                        .Include(m => m.Departement)
                                         .FirstOrDefaultAsync(m => m.Id_medecin == id);
 
             if (medecin == null)
@@ -71,7 +79,12 @@ namespace gestionHopital.Controllers
                     medecin.Utilisateur.DateNaissance,
                     medecin.Utilisateur.Email
                 },
-                Specialisation = medecin.Specialisation
+                Specialisation = medecin.Specialisation,
+                DepartementID = medecin.DepartementID,
+                Departement = medecin.Departement == null ? null : new
+                {
+                    medecin.Departement.Nom
+                }
             };
 
             return Ok(result);
@@ -106,6 +119,7 @@ namespace gestionHopital.Controllers
 
             var medecin = await _context.Medecins
                                         .Include(m => m.Utilisateur)
+                                        .Include(m => m.Departement)
                                         .FirstOrDefaultAsync(m => m.Id_medecin == id);
 
             if (medecin == null)
@@ -114,6 +128,7 @@ namespace gestionHopital.Controllers
             }
 
             medecin.Specialisation = updatedMedecin.Specialisation;
+            medecin.DepartementID = updatedMedecin.DepartementID;
 
             if (medecin.Utilisateur != null)
             {

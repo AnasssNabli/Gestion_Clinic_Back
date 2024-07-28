@@ -181,12 +181,15 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_dep"));
 
-                    b.Property<int>("ResponsableDepartement")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_dep");
-
-                    b.HasIndex("ResponsableDepartement");
 
                     b.ToTable("Departements");
                 });
@@ -252,6 +255,9 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_medecin"));
 
+                    b.Property<int>("DepartementID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Specialisation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -260,6 +266,8 @@ namespace gestionHopital.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id_medecin");
+
+                    b.HasIndex("DepartementID");
 
                     b.HasIndex("UtilisateurID");
 
@@ -650,17 +658,6 @@ namespace gestionHopital.Migrations
                     b.Navigation("Utilisateur");
                 });
 
-            modelBuilder.Entity("gestionHopital.Models.Departement", b =>
-                {
-                    b.HasOne("gestionHopital.Models.Medecin", "Medecin")
-                        .WithMany()
-                        .HasForeignKey("ResponsableDepartement")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medecin");
-                });
-
             modelBuilder.Entity("gestionHopital.Models.Disponibilite", b =>
                 {
                     b.HasOne("gestionHopital.Models.Medecin", "Medecin")
@@ -685,11 +682,19 @@ namespace gestionHopital.Migrations
 
             modelBuilder.Entity("gestionHopital.Models.Medecin", b =>
                 {
+                    b.HasOne("gestionHopital.Models.Departement", "Departement")
+                        .WithMany()
+                        .HasForeignKey("DepartementID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("gestionHopital.Models.Utilisateur", "Utilisateur")
                         .WithMany()
                         .HasForeignKey("UtilisateurID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Departement");
 
                     b.Navigation("Utilisateur");
                 });

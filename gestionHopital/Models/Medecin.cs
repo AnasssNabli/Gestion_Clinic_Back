@@ -16,6 +16,10 @@ namespace gestionHopital.Models
 
         public string Specialisation { get; set; }
 
-        
+        // Foreign key to Departement
+        public int DepartementID { get; set; }
+
+        [ForeignKey("DepartementID")]
+        public Departement? Departement { get; set; }
     }
 }

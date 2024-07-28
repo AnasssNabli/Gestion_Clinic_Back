@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace gestionHopital.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class initialmigration2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,6 +55,20 @@ namespace gestionHopital.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departements",
+                columns: table => new
+                {
+                    Id_dep = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departements", x => x.Id_dep);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,26 +212,6 @@ namespace gestionHopital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Medecins",
-                columns: table => new
-                {
-                    Id_medecin = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UtilisateurID = table.Column<int>(type: "int", nullable: false),
-                    Specialisation = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medecins", x => x.Id_medecin);
-                    table.ForeignKey(
-                        name: "FK_Medecins_AspNetUsers_UtilisateurID",
-                        column: x => x.UtilisateurID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
@@ -240,21 +234,50 @@ namespace gestionHopital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Departements",
+                name: "Medecins",
                 columns: table => new
                 {
-                    Id_dep = table.Column<int>(type: "int", nullable: false)
+                    Id_medecin = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ResponsableDepartement = table.Column<int>(type: "int", nullable: false)
+                    UtilisateurID = table.Column<int>(type: "int", nullable: false),
+                    Specialisation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartementID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departements", x => x.Id_dep);
+                    table.PrimaryKey("PK_Medecins", x => x.Id_medecin);
                     table.ForeignKey(
-                        name: "FK_Departements_Medecins_ResponsableDepartement",
-                        column: x => x.ResponsableDepartement,
-                        principalTable: "Medecins",
-                        principalColumn: "Id_medecin",
+                        name: "FK_Medecins_AspNetUsers_UtilisateurID",
+                        column: x => x.UtilisateurID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medecins_Departements_DepartementID",
+                        column: x => x.DepartementID,
+                        principalTable: "Departements",
+                        principalColumn: "Id_dep",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Factures",
+                columns: table => new
+                {
+                    Id_Facture = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    Montant = table.Column<decimal>(type: "decimal(16,2)", precision: 16, scale: 2, nullable: false),
+                    Paiement = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Factures", x => x.Id_Facture);
+                    table.ForeignKey(
+                        name: "FK_Factures_Patients_PatientID",
+                        column: x => x.PatientID,
+                        principalTable: "Patients",
+                        principalColumn: "Id_patient",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -277,52 +300,6 @@ namespace gestionHopital.Migrations
                         column: x => x.Id_Medecin,
                         principalTable: "Medecins",
                         principalColumn: "Id_medecin",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Secretaries",
-                columns: table => new
-                {
-                    SecrétaireID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UtilisateurID = table.Column<int>(type: "int", nullable: false),
-                    Superieurid_medecin = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Secretaries", x => x.SecrétaireID);
-                    table.ForeignKey(
-                        name: "FK_Secretaries_AspNetUsers_UtilisateurID",
-                        column: x => x.UtilisateurID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Secretaries_Medecins_Superieurid_medecin",
-                        column: x => x.Superieurid_medecin,
-                        principalTable: "Medecins",
-                        principalColumn: "Id_medecin");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Factures",
-                columns: table => new
-                {
-                    Id_Facture = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientID = table.Column<int>(type: "int", nullable: false),
-                    Montant = table.Column<decimal>(type: "decimal(16,2)", precision: 16, scale: 2, nullable: false),
-                    Paiement = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Factures", x => x.Id_Facture);
-                    table.ForeignKey(
-                        name: "FK_Factures_Patients_PatientID",
-                        column: x => x.PatientID,
-                        principalTable: "Patients",
-                        principalColumn: "Id_patient",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -394,6 +371,31 @@ namespace gestionHopital.Migrations
                         principalTable: "Patients",
                         principalColumn: "Id_patient",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Secretaries",
+                columns: table => new
+                {
+                    SecrétaireID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UtilisateurID = table.Column<int>(type: "int", nullable: false),
+                    Superieurid_medecin = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Secretaries", x => x.SecrétaireID);
+                    table.ForeignKey(
+                        name: "FK_Secretaries_AspNetUsers_UtilisateurID",
+                        column: x => x.UtilisateurID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Secretaries_Medecins_Superieurid_medecin",
+                        column: x => x.Superieurid_medecin,
+                        principalTable: "Medecins",
+                        principalColumn: "Id_medecin");
                 });
 
             migrationBuilder.CreateTable(
@@ -516,11 +518,6 @@ namespace gestionHopital.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departements_ResponsableDepartement",
-                table: "Departements",
-                column: "ResponsableDepartement");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Disponibilites_Id_Medecin",
                 table: "Disponibilites",
                 column: "Id_Medecin");
@@ -529,6 +526,11 @@ namespace gestionHopital.Migrations
                 name: "IX_Factures_PatientID",
                 table: "Factures",
                 column: "PatientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Medecins_DepartementID",
+                table: "Medecins",
+                column: "DepartementID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Medecins_UtilisateurID",
@@ -629,9 +631,6 @@ namespace gestionHopital.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Departements");
-
-            migrationBuilder.DropTable(
                 name: "Disponibilites");
 
             migrationBuilder.DropTable(
@@ -666,6 +665,9 @@ namespace gestionHopital.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "Departements");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

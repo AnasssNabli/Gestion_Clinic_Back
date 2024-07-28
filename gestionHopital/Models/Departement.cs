@@ -7,17 +7,10 @@ namespace gestionHopital.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id_dep{ get; set;  }
+        public int Id_dep { get; set; }
 
-        public string Nom;
+        public string Nom { get; set; }
 
-        public string Description;
-
-        
-        public int ResponsableDepartement { get; set; }
-        [ForeignKey("ResponsableDepartement")]
-        public Medecin? Medecin { get; set; }
-
-
+        public string Description { get; set; }
     }
 }

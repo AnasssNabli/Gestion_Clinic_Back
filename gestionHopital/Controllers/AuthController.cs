@@ -66,7 +66,8 @@ namespace gestionHopital.Controllers
                     {
                         UtilisateurID = user.Id,
                         Utilisateur = user,
-                        Specialisation = model.Specialisation
+                        Specialisation = model.Specialisation,
+                        DepartementID = model.DepartementID.Value // Assuming DepartementID is required for medecin
                     };
                     _context.Medecins.Add(medecin);
                     break;
@@ -166,8 +167,10 @@ namespace gestionHopital.Controllers
 
         [Required]
         public string Prenom { get; set; }
+
         [Required]
         public string Cin { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -183,6 +186,8 @@ namespace gestionHopital.Controllers
         public string? Genre { get; set; }
         public string? Adresse { get; set; }
         public string? Historiquemedical { get; set; }
+
+        public int? DepartementID { get; set; } // Added this line for DepartementID
     }
 
     public class LoginModel

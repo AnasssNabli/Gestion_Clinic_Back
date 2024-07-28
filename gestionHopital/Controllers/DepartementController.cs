@@ -3,6 +3,7 @@ using gestionHopital.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace gestionHopital.Controllers
 {
@@ -10,80 +11,70 @@ namespace gestionHopital.Controllers
     [ApiController]
     public class DepartementController : ControllerBase
     {
-        private readonly ApplicationDbContext _context; 
+        private readonly ApplicationDbContext _context;
+
         public DepartementController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public IActionResult getDepartement() {
-            return Ok(_context.Departements.ToList());
+        public IActionResult GetDepartements()
+        {
+            var departements = _context.Departements.ToList();
+            return Ok(departements);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult getDepartement(int id)
+        public IActionResult GetDepartement(int id)
         {
-            var departement = _context.Departements.Find(id); 
-            return departement is null ? NotFound() : Ok(departement);
-        }
+            var departement = _context.Departements.Find(id);
 
+            if (departement == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(departement);
+        }
 
         [HttpPost]
         public IActionResult AddDepartement(Departement departement)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var depa = new Departement();
-            depa.Nom = departement.Nom; 
-            depa.Description = departement.Description;
-            depa.ResponsableDepartement = departement.ResponsableDepartement; 
-
-            _context.Departements.Add(depa);
+            _context.Departements.Add(departement);
             _context.SaveChanges();
-            return Ok(depa);   
+            return Ok("departement enregistrer avec success");
         }
 
-        
         [HttpPut("{id:int}")]
         public IActionResult UpdateDepartement(int id, [FromBody] Departement updatedDepartement)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (updatedDepartement is null) return BadRequest("UpdatedDepartement object is null");
+            if (updatedDepartement == null) return BadRequest("UpdatedDepartement object is null");
 
-            var departement = _context.Departements.Include(d => d.Medecin).FirstOrDefault(d => d.Id_dep == id); 
+            var departement = _context.Departements.Find(id);
 
-            if (departement is null) return BadRequest(); 
+            if (departement == null) return NotFound();
 
             departement.Nom = updatedDepartement.Nom;
-
             departement.Description = updatedDepartement.Description;
-            departement.ResponsableDepartement = updatedDepartement.ResponsableDepartement;
 
-            if (departement.ResponsableDepartement != updatedDepartement.ResponsableDepartement)
-            {
-                var medecinResponsable = _context.Medecins.Find(updatedDepartement.ResponsableDepartement);
-                if (medecinResponsable is null)
-                {
-                    return BadRequest("not found");
-                }
-
-                departement.Medecin = medecinResponsable;
-            }
             _context.SaveChanges();
             return Ok(departement);
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult deleteDepartement(int id)
+        public IActionResult DeleteDepartement(int id)
         {
             var departement = _context.Departements.Find(id);
-            if (departement is null) return NotFound();
+            if (departement == null) return NotFound();
+
             _context.Departements.Remove(departement);
             _context.SaveChanges();
-            return Ok();
+            return Ok("dep deleted successfully");
         }
-
     }
 }

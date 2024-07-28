@@ -99,6 +99,13 @@ namespace gestionHopital.Data
                 .WithMany()
                 .HasForeignKey(r => r.Id_Medecin)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuration des relations entre Medecin et Departement
+            modelBuilder.Entity<Medecin>()
+               .HasOne(m => m.Departement) 
+               .WithMany()
+               .HasForeignKey(m => m.DepartementID)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
