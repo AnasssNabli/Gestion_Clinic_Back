@@ -12,8 +12,8 @@ using gestionHopital.Data;
 namespace gestionHopital.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240727223318_initial migration2")]
-    partial class initialmigration2
+    [Migration("20240729152320_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

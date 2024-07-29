@@ -13,9 +13,9 @@ namespace gestionHopital.Models
         public int UtilisateurID { get; set; }
 
         [ForeignKey("Supérieur")]
-        public int? Superieurid_medecin { get; set; } // Foreign key to Medecin
+        public int? Superieurid_medecin { get; set; } 
 
-        // Navigation properties
+        
         public virtual Utilisateur Utilisateur { get; set; }
         public virtual Medecin Supérieur { get; set; }
     }

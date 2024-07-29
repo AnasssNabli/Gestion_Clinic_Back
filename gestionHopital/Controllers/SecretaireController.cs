@@ -17,18 +17,86 @@ namespace gestionHopital.Controllers
         }
 
         [HttpGet]
-        public IActionResult getSecretaires() { 
-            return Ok(_context.Secretaries.ToList());
+        public async Task<IActionResult> getSecretaires()
+        {
+            var secretaires = await _context.Secretaries
+                .Include(s => s.Utilisateur)
+                .Include(s => s.Supérieur)
+                 .ThenInclude(m => m.Utilisateur) 
+                .ToListAsync();
+
+            var result = secretaires.Select(s => new
+            {
+                SecretaireID = s.SecrétaireID,
+                UtilisateurID = s.UtilisateurID,
+                Utilisateur = s.Utilisateur == null ? null : new
+                {
+                    s.Utilisateur.Nom,
+                    s.Utilisateur.Prenom,
+                    s.Utilisateur.Cin,
+                    s.Utilisateur.Telephone,
+                    s.Utilisateur.DateNaissance,
+                    s.Utilisateur.Email
+                },
+                Superieur = s.Supérieur == null ? null : new
+                {
+                    s.Supérieur.Id_medecin,
+                    Specialisation = s.Supérieur.Specialisation,
+                    Utilisateur = s.Supérieur.Utilisateur == null ? null : new
+                    {
+                        s.Supérieur.Utilisateur.Nom,
+                        s.Supérieur.Utilisateur.Prenom
+                    }
+                }
+            });
+
+            return Ok(result);
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public IActionResult getSecretaire(int id)
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetSecretaire(int id)
         {
-            var secretaire = _context.Secretaries.Find(id);
-            return secretaire is null ? NotFound() : Ok(secretaire); 
-         
+            var secretaire = await _context.Secretaries
+                .Include(s => s.Utilisateur)
+                .Include(s => s.Supérieur)
+                    .ThenInclude(m => m.Utilisateur) 
+                .FirstOrDefaultAsync(s => s.SecrétaireID == id);
+
+            if (secretaire == null)
+            {
+                return NotFound();
+            }
+            var result = new
+            {
+                SecretaireID = secretaire.SecrétaireID,
+                UtilisateurID = secretaire.UtilisateurID,
+                Utilisateur = secretaire.Utilisateur == null ? null : new
+                {
+                    secretaire.Utilisateur.Nom,
+                    secretaire.Utilisateur.Prenom,
+                    secretaire.Utilisateur.Cin,
+                    secretaire.Utilisateur.Telephone,
+                    secretaire.Utilisateur.DateNaissance,
+                    secretaire.Utilisateur.Email
+                },
+                Superieur = secretaire.Supérieur == null ? null : new
+                {
+                    secretaire.Supérieur.Id_medecin,
+                    Specialisation = secretaire.Supérieur.Specialisation,
+                    Utilisateur = secretaire.Supérieur.Utilisateur == null ? null : new
+                    {
+                        secretaire.Supérieur.Utilisateur.Nom,
+                        secretaire.Supérieur.Utilisateur.Prenom
+                    }
+                }
+            };
+
+            return Ok(result);
         }
+
+
+
 
         [HttpDelete]
         [Route("{id:int}")]
@@ -77,6 +145,8 @@ namespace gestionHopital.Controllers
             _context.SaveChanges();
             return Ok(secretary);
         }
+
+
 
 
     }
