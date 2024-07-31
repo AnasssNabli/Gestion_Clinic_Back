@@ -119,6 +119,18 @@ namespace gestionHopital.Controllers
             return Ok(new { token, type = userType });
         }
 
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout([FromBody] TokenModel model)
+        {
+            if (string.IsNullOrEmpty(model.Token))
+                return BadRequest("Token is required");
+
+            // Logic to invalidate the token can be implemented here
+            // Since JWTs are stateless, this could be a placeholder for actual token invalidation logic
+
+            return Ok(new { message = "Logged out successfully" });
+        }
+
         private async Task<string> GetUserType(int userId)
         {
             if (await _context.Admins.AnyAsync(a => a.UtilisateurID == userId))
@@ -199,5 +211,11 @@ namespace gestionHopital.Controllers
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+    }
+
+    public class TokenModel
+    {
+        [Required]
+        public string Token { get; set; }
     }
 }

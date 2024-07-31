@@ -17,12 +17,12 @@ namespace gestionHopital.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> getSecretaires()
+        public async Task<IActionResult> GetSecretaires()
         {
             var secretaires = await _context.Secretaries
                 .Include(s => s.Utilisateur)
                 .Include(s => s.Supérieur)
-                 .ThenInclude(m => m.Utilisateur) 
+                    .ThenInclude(m => m.Utilisateur)
                 .ToListAsync();
 
             var result = secretaires.Select(s => new
@@ -53,20 +53,20 @@ namespace gestionHopital.Controllers
             return Ok(result);
         }
 
-
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSecretaire(int id)
         {
             var secretaire = await _context.Secretaries
                 .Include(s => s.Utilisateur)
                 .Include(s => s.Supérieur)
-                    .ThenInclude(m => m.Utilisateur) 
+                    .ThenInclude(m => m.Utilisateur)
                 .FirstOrDefaultAsync(s => s.SecrétaireID == id);
 
             if (secretaire == null)
             {
                 return NotFound();
             }
+
             var result = new
             {
                 SecretaireID = secretaire.SecrétaireID,
@@ -95,59 +95,84 @@ namespace gestionHopital.Controllers
             return Ok(result);
         }
 
-
-
-
-        [HttpDelete]
-        [Route("{id:int}")]
-        public IActionResult deleteSecretaire(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteSecretaire(int id)
         {
-            var secretaire = _context.Secretaries.Find(id);
-            if (secretaire is null) return NotFound();
-            _context.Remove(secretaire); 
-            _context.SaveChanges();
+            var secretaire = await _context.Secretaries.FindAsync(id);
+            if (secretaire == null)
+                return NotFound();
+
+            _context.Secretaries.Remove(secretaire);
+            await _context.SaveChangesAsync();
+
             return Ok();
         }
-
-
         [HttpPut("{id:int}")]
-        public IActionResult UpdateSecretary(int id,  Secretary updatedSecretary)
+        public async Task<IActionResult> UpdateSecretaire(int id, SecretaryDto updatedSecretaryDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            
-            
-            var secretary = _context.Secretaries.Include(s => s.Utilisateur) .Include(s => s.Supérieur) .FirstOrDefault(s => s.SecrétaireID == id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (secretary is  null) return NotFound();
-          
-            secretary.Superieurid_medecin = updatedSecretary.Superieurid_medecin;
+            // Find the Secretary by ID
+            var secretary = await _context.Secretaries
+                .Include(s => s.Utilisateur)
+                .Include(s => s.Supérieur)
+                .FirstOrDefaultAsync(s => s.SecrétaireID == id);
 
-          
-            if (secretary.Utilisateur is not null)
+            if (secretary == null)
+                return NotFound();
+
+            // Update Secretary fields
+            if (updatedSecretaryDto.DateNaissance.HasValue)
             {
-                secretary.Utilisateur.Nom = updatedSecretary.Utilisateur.Nom;
-                secretary.Utilisateur.Prenom = updatedSecretary.Utilisateur.Prenom;
-                secretary.Utilisateur.Cin = updatedSecretary.Utilisateur.Cin; 
-                secretary.Utilisateur.Email = updatedSecretary.Utilisateur.Email;
-                secretary.Utilisateur.Telephone = updatedSecretary.Utilisateur.Telephone ;
-                secretary.Utilisateur.DateNaissance = updatedSecretary.Utilisateur.DateNaissance;
+                secretary.Utilisateur.DateNaissance = updatedSecretaryDto.DateNaissance.Value;
+            }
+            else
+            {
+                // Handle the case where DateNaissance is null if necessary
             }
 
-            if (updatedSecretary.Superieurid_medecin.HasValue)
+            secretary.Utilisateur.Email = updatedSecretaryDto.Email;
+            secretary.Utilisateur.Nom = updatedSecretaryDto.Nom;
+            secretary.Utilisateur.Prenom = updatedSecretaryDto.Prenom;
+            secretary.Utilisateur.Telephone = updatedSecretaryDto.Telephone;
+
+            // Optionally handle Password update if required
+            // Assuming Password is handled separately, as it might be hashed or managed differently
+
+            // Update Supérieur if provided
+            if (updatedSecretaryDto.Superieurid_medecin.HasValue)
             {
-                var superiorMedecin = _context.Medecins.Find(updatedSecretary.Superieurid_medecin.Value);
-                if (superiorMedecin is null)
+                var superiorMedecin = await _context.Medecins.FindAsync(updatedSecretaryDto.Superieurid_medecin.Value);
+                if (superiorMedecin == null)
                 {
                     return BadRequest("Responsable not found");
                 }
                 secretary.Supérieur = superiorMedecin;
             }
-            _context.SaveChanges();
-            return Ok(secretary);
+            else
+            {
+                secretary.Supérieur = null;
+            }
+
+            // Save changes
+            await _context.SaveChangesAsync();
+            return Ok("Secretary updated successfully");
         }
 
 
-
-
     }
+
+    public class SecretaryDto
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Telephone { get; set; }
+        public DateOnly? DateNaissance { get; set; }
+        public int? Superieurid_medecin { get; set; }
+        
+    }
+
 }
