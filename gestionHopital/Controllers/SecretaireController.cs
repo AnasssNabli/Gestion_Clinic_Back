@@ -113,23 +113,23 @@ namespace gestionHopital.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Find the Secretary by ID
+          
             var secretary = await _context.Secretaries
                 .Include(s => s.Utilisateur)
                 .Include(s => s.Supérieur)
                 .FirstOrDefaultAsync(s => s.SecrétaireID == id);
 
-            if (secretary == null)
+            if (secretary is null)
                 return NotFound();
 
-            // Update Secretary fields
+           
             if (updatedSecretaryDto.DateNaissance.HasValue)
             {
                 secretary.Utilisateur.DateNaissance = updatedSecretaryDto.DateNaissance.Value;
             }
             else
             {
-                // Handle the case where DateNaissance is null if necessary
+           
             }
 
             secretary.Utilisateur.Email = updatedSecretaryDto.Email;
@@ -137,10 +137,7 @@ namespace gestionHopital.Controllers
             secretary.Utilisateur.Prenom = updatedSecretaryDto.Prenom;
             secretary.Utilisateur.Telephone = updatedSecretaryDto.Telephone;
 
-            // Optionally handle Password update if required
-            // Assuming Password is handled separately, as it might be hashed or managed differently
-
-            // Update Supérieur if provided
+            
             if (updatedSecretaryDto.Superieurid_medecin.HasValue)
             {
                 var superiorMedecin = await _context.Medecins.FindAsync(updatedSecretaryDto.Superieurid_medecin.Value);
@@ -155,7 +152,7 @@ namespace gestionHopital.Controllers
                 secretary.Supérieur = null;
             }
 
-            // Save changes
+         
             await _context.SaveChangesAsync();
             return Ok("Secretary updated successfully");
         }

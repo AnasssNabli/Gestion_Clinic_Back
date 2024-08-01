@@ -105,16 +105,16 @@ namespace gestionHopital.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateMedecin(int id, [FromBody] Medecin updatedMedecin)
+        public async Task<IActionResult> UpdateMedecin(int id, [FromBody] MedecinDto updatedMedecinDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (updatedMedecin == null)
+            if (updatedMedecinDto == null)
             {
-                return BadRequest("UpdatedMedecin object is null.");
+                return BadRequest("UpdatedMedecinDto object is null.");
             }
 
             var medecin = await _context.Medecins
@@ -122,27 +122,45 @@ namespace gestionHopital.Controllers
                                         .Include(m => m.Departement)
                                         .FirstOrDefaultAsync(m => m.Id_medecin == id);
 
-            if (medecin == null)
+            if (medecin is null)
             {
                 return NotFound();
             }
 
-            medecin.Specialisation = updatedMedecin.Specialisation;
-            medecin.DepartementID = updatedMedecin.DepartementID;
+            medecin.Specialisation = updatedMedecinDto.Specialisation;
+            medecin.DepartementID = updatedMedecinDto.DepartementID;
 
-            if (medecin.Utilisateur != null)
+            if (medecin.Utilisateur is not null)
             {
-                medecin.Utilisateur.Nom = updatedMedecin.Utilisateur.Nom;
-                medecin.Utilisateur.Cin = updatedMedecin.Utilisateur.Cin;
-                medecin.Utilisateur.Prenom = updatedMedecin.Utilisateur.Prenom;
-                medecin.Utilisateur.Email = updatedMedecin.Utilisateur.Email;
-                medecin.Utilisateur.Telephone = updatedMedecin.Utilisateur.Telephone;
-                medecin.Utilisateur.DateNaissance = updatedMedecin.Utilisateur.DateNaissance;
+                medecin.Utilisateur.Nom = updatedMedecinDto.Nom;
+                medecin.Utilisateur.Prenom = updatedMedecinDto.Prenom;
+                medecin.Utilisateur.Email = updatedMedecinDto.Email;
+                medecin.Utilisateur.Telephone = updatedMedecinDto.Telephone;
+                medecin.Utilisateur.Cin = updatedMedecinDto.Cin;
+                medecin.Utilisateur.DateNaissance = updatedMedecinDto.DateNaissance;
+               
             }
 
             await _context.SaveChangesAsync();
 
-            return Ok(medecin);
+            return Ok("Medecin updated successfully");
         }
+
+
+        public class MedecinDto
+        {
+            public string Specialisation { get; set; }
+            public int DepartementID { get; set; }
+            public string Nom { get; set; }
+            public string Prenom { get; set; }
+            public string Email { get; set; }
+            public string Telephone { get; set; }
+            public string Cin { get; set; }
+            public DateOnly DateNaissance { get; set; }
+     
+        }
+
+
+
     }
 }

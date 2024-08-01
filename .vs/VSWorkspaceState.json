@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\gestionHopital",
-    "\\gestionHopital\\Controllers"
+    "\\gestionHopital\\Controllers",
+    "\\gestionHopital\\Models"
   ],
-  "SelectedNode": "\\gestionHopital.sln",
+  "SelectedNode": "\\gestionHopital\\Controllers\\PatientController.cs",
   "PreviewInSolutionExplorer": false
 }

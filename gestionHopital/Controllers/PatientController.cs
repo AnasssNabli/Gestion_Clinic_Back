@@ -3,6 +3,8 @@ using gestionHopital.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace gestionHopital.Controllers
 {
@@ -20,7 +22,8 @@ namespace gestionHopital.Controllers
         [HttpGet]
         public IActionResult GetPatients()
         {
-            return Ok(_context.Patients.Include(p => p.Utilisateur).ToList());
+            var patients = _context.Patients.Include(p => p.Utilisateur).ToList();
+            return Ok(patients);
         }
 
         [HttpGet("{id:int}")]
@@ -42,35 +45,58 @@ namespace gestionHopital.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdatePatient(int id,Patient Patient)
+        public async Task<IActionResult> UpdatePatient(int id, [FromBody] PatientDto updatedPatientDto)
         {
-            return Ok(Patient);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (Patient is null)
+            var patient = await _context.Patients
+                .Include(p => p.Utilisateur)
+                .FirstOrDefaultAsync(p => p.Id_patient == id);
+
+            if (patient is null)
+                return NotFound();
+
+            // Update fields
+            if (updatedPatientDto.DateNaissance.HasValue)
+                patient.Utilisateur.DateNaissance = updatedPatientDto.DateNaissance.Value;
+
+            if (Enum.TryParse<Genre>(updatedPatientDto.Genre, out var genre))
             {
-                return BadRequest("The updatedPatient field is required");
+                patient.Genre = genre;
+            }
+            else
+            {
+                ModelState.AddModelError("Genre", "Invalid genre value.");
+                return BadRequest(ModelState);
             }
 
-            var patient = _context.Patients.Include(p => p.Utilisateur).FirstOrDefault(p => p.Id_patient == id);
-            if (patient is null) return NotFound();
+            patient.Utilisateur.Email = updatedPatientDto.Email;
+            patient.Utilisateur.Nom = updatedPatientDto.Nom;
+            patient.Utilisateur.Prenom = updatedPatientDto.Prenom;
+            patient.Utilisateur.Telephone = updatedPatientDto.Telephone;
+            patient.Adresse = updatedPatientDto.Adresse;
+            patient.Historiquemedical = updatedPatientDto.HistoriqueMedical;
 
-           
-            patient.Genre = Patient.Genre;
-            patient.Adresse = Patient.Adresse;
-            patient.Historiquemedical = Patient.Historiquemedical;
 
-           
-            if (patient.Utilisateur is not null && Patient.Utilisateur is not null)
-            {
-                patient.Utilisateur.Nom = Patient.Utilisateur.Nom ?? patient.Utilisateur.Nom;
-                patient.Utilisateur.Prenom = Patient.Utilisateur.Prenom ?? patient.Utilisateur.Prenom;
-                patient.Utilisateur.Email = Patient.Utilisateur.Email ?? patient.Utilisateur.Email;
-                patient.Utilisateur.Telephone = Patient.Utilisateur.Telephone ?? patient.Utilisateur.Telephone;
-                patient.Utilisateur.DateNaissance = Patient.Utilisateur.DateNaissance ?? patient.Utilisateur.DateNaissance;
-            }
-
-            _context.SaveChanges();
-            return Ok(patient);
+            await _context.SaveChangesAsync();
+            return Ok("Patient updated successfully");
         }
+    }
+
+    public class PatientDto
+    {
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Cin { get; set; }
+        public string Telephone { get; set; }
+        public DateOnly? DateNaissance { get; set; }
+        public string Email { get; set; }
+        public string Adresse { get; set; }
+        public string HistoriqueMedical { get; set; }
+
+        [Required]
+        public string Genre { get; set; }  
+        public string? Password { get; set; }
     }
 }
