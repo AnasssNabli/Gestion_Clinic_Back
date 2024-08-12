@@ -122,24 +122,14 @@ namespace gestionHopital.Controllers
                                         .Include(m => m.Departement)
                                         .FirstOrDefaultAsync(m => m.Id_medecin == id);
 
-            if (medecin is null)
-            {
-                return NotFound();
-            }
-
             medecin.Specialisation = updatedMedecinDto.Specialisation;
             medecin.DepartementID = updatedMedecinDto.DepartementID;
-
-            if (medecin.Utilisateur is not null)
-            {
                 medecin.Utilisateur.Nom = updatedMedecinDto.Nom;
                 medecin.Utilisateur.Prenom = updatedMedecinDto.Prenom;
                 medecin.Utilisateur.Email = updatedMedecinDto.Email;
                 medecin.Utilisateur.Telephone = updatedMedecinDto.Telephone;
                 medecin.Utilisateur.Cin = updatedMedecinDto.Cin;
                 medecin.Utilisateur.DateNaissance = updatedMedecinDto.DateNaissance;
-               
-            }
 
             await _context.SaveChangesAsync();
 

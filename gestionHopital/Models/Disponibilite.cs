@@ -18,9 +18,9 @@ namespace gestionHopital.Models
         public string JourDeLaSemaine { get; set; }
 
         [Required]
-        public TimeSpan HeureDebut { get; set; }
+        public string HeureDebut { get; set; }
 
         [Required]
-        public TimeSpan HeureFin { get; set; }
+        public string HeureFin { get; set; }
     }
 }
