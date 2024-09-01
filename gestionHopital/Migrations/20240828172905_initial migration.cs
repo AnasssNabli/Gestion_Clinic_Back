@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace gestionHopital.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,7 @@ namespace gestionHopital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Médicaments",
+                name: "Medicaments",
                 columns: table => new
                 {
                     Id_medicament = table.Column<int>(type: "int", nullable: false)
@@ -83,7 +83,7 @@ namespace gestionHopital.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Médicaments", x => x.Id_medicament);
+                    table.PrimaryKey("PK_Medicaments", x => x.Id_medicament);
                 });
 
             migrationBuilder.CreateTable(
@@ -289,8 +289,8 @@ namespace gestionHopital.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Id_Medecin = table.Column<int>(type: "int", nullable: false),
                     JourDeLaSemaine = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HeureDebut = table.Column<TimeSpan>(type: "time", nullable: false),
-                    HeureFin = table.Column<TimeSpan>(type: "time", nullable: false)
+                    HeureDebut = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HeureFin = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -351,10 +351,10 @@ namespace gestionHopital.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Id_patient = table.Column<int>(type: "int", nullable: false),
                     Id_Medecin = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Heure = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Heure = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Raison = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Statut = table.Column<int>(type: "int", nullable: false)
+                    Statut = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -447,7 +447,7 @@ namespace gestionHopital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdonnanceMédicaments",
+                name: "OrdonnanceMedicaments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -458,15 +458,15 @@ namespace gestionHopital.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdonnanceMédicaments", x => x.Id);
+                    table.PrimaryKey("PK_OrdonnanceMedicaments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrdonnanceMédicaments_Médicaments_MedicamentID",
+                        name: "FK_OrdonnanceMedicaments_Medicaments_MedicamentID",
                         column: x => x.MedicamentID,
-                        principalTable: "Médicaments",
+                        principalTable: "Medicaments",
                         principalColumn: "Id_medicament",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrdonnanceMédicaments_Ordonnances_OrdonnanceID",
+                        name: "FK_OrdonnanceMedicaments_Ordonnances_OrdonnanceID",
                         column: x => x.OrdonnanceID,
                         principalTable: "Ordonnances",
                         principalColumn: "Id_Ordonnance",
@@ -558,13 +558,13 @@ namespace gestionHopital.Migrations
                 column: "ExpediteurPatientId_patient");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdonnanceMédicaments_MedicamentID",
-                table: "OrdonnanceMédicaments",
+                name: "IX_OrdonnanceMedicaments_MedicamentID",
+                table: "OrdonnanceMedicaments",
                 column: "MedicamentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdonnanceMédicaments_OrdonnanceID",
-                table: "OrdonnanceMédicaments",
+                name: "IX_OrdonnanceMedicaments_OrdonnanceID",
+                table: "OrdonnanceMedicaments",
                 column: "OrdonnanceID");
 
             migrationBuilder.CreateIndex(
@@ -640,7 +640,7 @@ namespace gestionHopital.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "OrdonnanceMédicaments");
+                name: "OrdonnanceMedicaments");
 
             migrationBuilder.DropTable(
                 name: "RendezVous");
@@ -652,7 +652,7 @@ namespace gestionHopital.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Médicaments");
+                name: "Medicaments");
 
             migrationBuilder.DropTable(
                 name: "Ordonnances");

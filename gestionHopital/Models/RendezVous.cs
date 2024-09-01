@@ -3,13 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace gestionHopital.Models
 {
-    public enum StatutRendezVous
-    {
-        Planifie,
-        Complete,
-        Annule
-    }
-
     public class RendezVous
     {
         [Key]
@@ -25,15 +18,15 @@ namespace gestionHopital.Models
         public Medecin? Medecin { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         [Required]
-        public TimeSpan Heure { get; set; }
+        public string Heure { get; set; }
 
         public string Raison { get; set; }
 
         [Required]
-        [EnumDataType(typeof(StatutRendezVous))]
-        public StatutRendezVous Statut { get; set; }
+        
+        public string Statut { get; set; }
     }
 }

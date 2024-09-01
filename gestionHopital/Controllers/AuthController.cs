@@ -97,7 +97,7 @@ namespace gestionHopital.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully" });
+            return Ok(user.Id);
         }
 
         [HttpPost("Login")]
@@ -161,7 +161,7 @@ namespace gestionHopital.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddMinutes(3000),
                 SigningCredentials = creds,
                 Issuer = _configuration["JwtConfig:Issuer"],
                 Audience = _configuration["JwtConfig:Audience"] // Ensure audience is included here

@@ -1,7 +1,7 @@
-﻿using gestionHopital.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using gestionHopital.Models;
 
 namespace gestionHopital.Data
 {
@@ -18,8 +18,8 @@ namespace gestionHopital.Data
         public DbSet<RendezVous> RendezVous { get; set; }
         public DbSet<Visite> Visites { get; set; }
         public DbSet<Ordonnance> Ordonnances { get; set; }
-        public DbSet<Medicament> Médicaments { get; set; }
-        public DbSet<OrdonnanceMedicament> OrdonnanceMédicaments { get; set; }
+        public DbSet<Medicament> Medicaments { get; set; }
+        public DbSet<OrdonnanceMedicament> OrdonnanceMedicaments { get; set; }
         public DbSet<Facture> Factures { get; set; }
         public DbSet<Message> Messages { get; set; }
 
@@ -38,7 +38,7 @@ namespace gestionHopital.Data
             modelBuilder.Entity<Secretary>()
                 .HasOne(s => s.Supérieur)
                 .WithMany()
-                .HasForeignKey(s => s.Superieurid_medecin)
+                .HasForeignKey(s => s.Superieurid_medecin) // Corrected to match property name
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Configuration de la relation un à un entre Visite et Ordonnance
@@ -102,7 +102,7 @@ namespace gestionHopital.Data
 
             // Configuration des relations entre Medecin et Departement
             modelBuilder.Entity<Medecin>()
-               .HasOne(m => m.Departement) 
+               .HasOne(m => m.Departement)
                .WithMany()
                .HasForeignKey(m => m.DepartementID)
                .OnDelete(DeleteBehavior.Restrict);

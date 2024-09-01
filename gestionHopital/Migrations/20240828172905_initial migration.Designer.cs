@@ -12,8 +12,8 @@ using gestionHopital.Data;
 namespace gestionHopital.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240729152320_Initial")]
-    partial class Initial
+    [Migration("20240828172905_initial migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,11 +205,13 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_disponibilte"));
 
-                    b.Property<TimeSpan>("HeureDebut")
-                        .HasColumnType("time");
+                    b.Property<string>("HeureDebut")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("HeureFin")
-                        .HasColumnType("time");
+                    b.Property<string>("HeureFin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Id_Medecin")
                         .HasColumnType("int");
@@ -299,7 +301,7 @@ namespace gestionHopital.Migrations
 
                     b.HasKey("Id_medicament");
 
-                    b.ToTable("Médicaments");
+                    b.ToTable("Medicaments");
                 });
 
             modelBuilder.Entity("gestionHopital.Models.Message", b =>
@@ -390,7 +392,7 @@ namespace gestionHopital.Migrations
 
                     b.HasIndex("OrdonnanceID");
 
-                    b.ToTable("OrdonnanceMédicaments");
+                    b.ToTable("OrdonnanceMedicaments");
                 });
 
             modelBuilder.Entity("gestionHopital.Models.Patient", b =>
@@ -430,11 +432,13 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_RendezVous"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Heure")
-                        .HasColumnType("time");
+                    b.Property<string>("Heure")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Id_Medecin")
                         .HasColumnType("int");
@@ -446,8 +450,9 @@ namespace gestionHopital.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Statut")
-                        .HasColumnType("int");
+                    b.Property<string>("Statut")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_RendezVous");
 
