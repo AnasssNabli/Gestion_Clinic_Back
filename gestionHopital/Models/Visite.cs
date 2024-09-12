@@ -16,12 +16,13 @@ namespace gestionHopital.Models
         [Required]
         public int MedecinID { get; set; }
         public Medecin Medecin { get; set; }
+        [Required]
+        public int montant { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         public string? Notes { get; set; }
-        public int OrdonnanceID { get; set; }
-        public Ordonnance? Ordonnance { get; set; }
+        public ICollection<VisiteMedicament> VisiteMedicaments { get; set; }
     }
 }

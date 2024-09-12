@@ -21,5 +21,10 @@ namespace gestionHopital.Models
 
         [ForeignKey("DepartementID")]
         public Departement? Departement { get; set; }
+
+        // Navigation properties
+        public ICollection<RendezVous> RendezVous { get; set; }
+        public ICollection<Secretary> Secretaries { get; set; }
+
     }
 }

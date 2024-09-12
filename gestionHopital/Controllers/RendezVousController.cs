@@ -2,11 +2,14 @@
 using gestionHopital.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -23,9 +26,9 @@ public class RendezVousController : ControllerBase
 
     // POST: api/RendezVous
     [HttpPost]
-    public async Task<ActionResult> PostRendezVous([FromBody] RendezVousDto model)
+    public async Task<ActionResult> PostRendezVous([FromBody] RendezVousDtoo model)
     {
-        var patientId = GetPatientIdFromToken();
+        var patientId = await GetPatientIdFromToken();
         if (patientId == null)
         {
             return Unauthorized();
@@ -51,7 +54,7 @@ public class RendezVousController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RendezVousDto>>> GetRendezVous()
     {
-        var userId = GetUserIdFromToken();
+        var userId = await GetUserIdFromToken();
         if (userId == null)
             return Unauthorized();
 
@@ -85,15 +88,17 @@ public class RendezVousController : ControllerBase
             }
         }
 
+        rendezVousQuery = rendezVousQuery.OrderBy(r => r.Heure);
+
         var rendezVousList = await rendezVousQuery.ToListAsync();
 
         var rendezVousDtos = rendezVousList.Select(r => new RendezVousDto
         {
             Id_RendezVous = r.Id_RendezVous,
             Id_patient = r.Id_patient,
-            PatientName = r.Patient != null ? r.Patient.Utilisateur != null ? r.Patient.Utilisateur.Nom + " " + r.Patient.Utilisateur.Prenom : "Unknown" : "Unknown",
+            PatientName = r.Patient?.Utilisateur != null ? r.Patient.Utilisateur.Nom + " " + r.Patient.Utilisateur.Prenom : "Unknown",
             Id_Medecin = r.Id_Medecin,
-            MedecinName = r.Medecin != null ? r.Medecin.Utilisateur != null ? r.Medecin.Utilisateur.Nom + " " + r.Medecin.Utilisateur.Prenom : "Unknown" : "Unknown",
+            MedecinName = r.Medecin?.Utilisateur != null ? r.Medecin.Utilisateur.Nom + " " + r.Medecin.Utilisateur.Prenom : "Unknown",
             Date = r.Date,
             Heure = r.Heure,
             Raison = r.Raison,
@@ -117,7 +122,97 @@ public class RendezVousController : ControllerBase
         return NoContent();
     }
 
-    // PUT: api/RendezVous/UpdateStatut/5
+    [HttpPost("GetFilteredDisponibilite")]
+    public async Task<ActionResult<IEnumerable<Disponibilite>>> GetFilteredDisponibilite([FromBody] DisponibiliteRequestDto request)
+    {
+        // Helper method to preprocess and validate input time strings
+        string preprocessTime(string time) => time.Replace('.', ':');
+
+        // Helper method to parse time strings into TimeSpan
+        bool TryParseTime(string time, out TimeSpan result)
+        {
+            return TimeSpan.TryParseExact(preprocessTime(time), @"hh\:mm", null, out result);
+        }
+
+        // Helper method to add hours to a TimeSpan
+        TimeSpan AddHours(TimeSpan time, int hours)
+        {
+            return time.Add(TimeSpan.FromHours(hours));
+        }
+
+        var disponibilites = await _context.Disponibilites
+            .Where(d => d.Id_Medecin == request.Id_Medecin && d.JourDeLaSemaine == request.JourDeLaSemaine)
+            .ToListAsync();
+
+        var rendezVous = await _context.RendezVous
+            .Where(r => r.Id_Medecin == request.Id_Medecin && r.Date == request.Date && r.Statut == "Planifie")
+            .ToListAsync();
+
+        var filteredDisponibilites = new List<Disponibilite>();
+
+        foreach (var dispo in disponibilites)
+        {
+            if (TryParseTime(dispo.HeureDebut, out var dispoHeureDebut) &&
+                TryParseTime(dispo.HeureFin, out var dispoHeureFin))
+            {
+                var currentStart = dispoHeureDebut;
+                var currentEnd = dispoHeureFin;
+
+                var newSlots = new List<Disponibilite>();
+
+                foreach (var rdv in rendezVous)
+                {
+                    if (TryParseTime(rdv.Heure, out var rdvTime))
+                    {
+                        var rdvEndTime = AddHours(rdvTime, 1);
+
+                        if (rdvTime < currentEnd && rdvEndTime > currentStart)
+                        {
+                            if (currentStart == rdvTime)
+                            {
+                                currentStart = rdvEndTime;
+                            }
+                            else
+                            {
+                                if (currentStart < rdvTime)
+                                {
+                                    newSlots.Add(new Disponibilite
+                                    {
+                                        Id_Medecin = dispo.Id_Medecin,
+                                        JourDeLaSemaine = dispo.JourDeLaSemaine,
+                                        HeureDebut = currentStart.ToString(@"hh\:mm"),
+                                        HeureFin = rdvTime.ToString(@"hh\:mm")
+                                    });
+                                }
+
+                                currentStart = rdvEndTime;
+                            }
+                        }
+                    }
+                }
+
+                if (currentStart < currentEnd)
+                {
+                    newSlots.Add(new Disponibilite
+                    {
+                        Id_Medecin = dispo.Id_Medecin,
+                        JourDeLaSemaine = dispo.JourDeLaSemaine,
+                        HeureDebut = currentStart.ToString(@"hh\:mm"),
+                        HeureFin = currentEnd.ToString(@"hh\:mm")
+                    });
+                }
+
+                filteredDisponibilites.AddRange(newSlots);
+            }
+            else
+            {
+                return BadRequest("Invalid time format in availability data.");
+            }
+        }
+
+        return Ok(filteredDisponibilites);
+    }
+
     [HttpPut("UpdateStatut/{id}")]
     public async Task<IActionResult> UpdateRendezVousStatut(int id, [FromBody] string statut)
     {
@@ -132,8 +227,7 @@ public class RendezVousController : ControllerBase
         return NoContent();
     }
 
-    // Helper method to get the patient ID from the JWT token
-    private int? GetPatientIdFromToken()
+    private async Task<int?> GetUserIdFromToken()
     {
         var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if (string.IsNullOrEmpty(token))
@@ -157,65 +251,62 @@ public class RendezVousController : ControllerBase
             }, out SecurityToken validatedToken);
 
             var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var patientId))
+            return userIdClaim != null ? int.Parse(userIdClaim.Value) : (int?)null;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (you can use your logging framework)
+            return null;
+        }
+    }
+
+    private async Task<int?> GetPatientIdFromToken()
+    {
+        var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        if (string.IsNullOrEmpty(token))
+        {
+            return null;
+        }
+
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]);
+            var tokenValidationParameters = new TokenValidationParameters
             {
-                return patientId;
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["JwtConfig:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ClockSkew = TimeSpan.Zero
+            };
+
+            var claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
+
+            var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return await GetPatientIdForUser(userId);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            // Log the exception (you can use your logging framework)
+            // Example: _logger.LogError(ex, "Error getting patient ID from token.");
             return null;
         }
 
         return null;
     }
 
-    // Helper method to get the user ID from the JWT token
-    private int? GetUserIdFromToken()
-    {
-        var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        if (string.IsNullOrEmpty(token))
-        {
-            return null;
-        }
-
-        try
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]);
-            var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = _configuration["JwtConfig:Issuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
-
-            var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return null;
-            }
-
-            return int.Parse(userIdClaim.Value);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
-    // Helper method to get the Patient ID for a given user ID
     private async Task<int?> GetPatientIdForUser(int userId)
     {
         var patient = await _context.Patients.FirstOrDefaultAsync(p => p.UtilisateurID == userId);
         return patient?.Id_patient;
     }
 
-    // Helper method to get the Medecin ID for a given user ID
     private async Task<int?> GetMedecinIdForUser(int userId)
     {
         var medecin = await _context.Medecins.FirstOrDefaultAsync(m => m.UtilisateurID == userId);
@@ -223,7 +314,7 @@ public class RendezVousController : ControllerBase
     }
 }
 
-// DTO class
+// DTO classes
 public class RendezVousDto
 {
     public int Id_RendezVous { get; set; }
@@ -235,4 +326,20 @@ public class RendezVousDto
     public string Heure { get; set; }
     public string Raison { get; set; }
     public string Statut { get; set; }
+}
+
+public class RendezVousDtoo
+{
+    public int Id_Medecin { get; set; }
+    public string Date { get; set; }
+    public string Heure { get; set; }
+    public string Raison { get; set; }
+    public string Statut { get; set; }
+}
+
+public class DisponibiliteRequestDto
+{
+    public string JourDeLaSemaine { get; set; }
+    public string Date { get; set; }
+    public int Id_Medecin { get; set; }
 }

@@ -9,7 +9,7 @@ namespace gestionHopital.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_medicament { get; set; } 
         public string Nom { get; set; } 
-        public string Dosage { get; set; } 
-        public string Instructions { get; set; } 
+        public string Instructions { get; set; }
+        public ICollection<VisiteMedicament> VisiteMedicaments { get; set; }
     }
 }

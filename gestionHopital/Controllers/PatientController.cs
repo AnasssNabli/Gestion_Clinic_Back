@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace gestionHopital.Controllers
@@ -34,14 +35,39 @@ namespace gestionHopital.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeletePatient(int id)
+        public async Task<IActionResult> DeletePatient(int id)
         {
-            var patient = _context.Patients.Find(id);
-            if (patient is null) return NotFound();
+            // Rechercher le patient
+            var patient = await _context.Patients
+                                        .Include(p => p.RendezVous) // Inclure les rendez-vous associés
+                                        .FirstOrDefaultAsync(p => p.Id_patient == id);
+            if (patient == null)
+                return NotFound();
 
+            // Supprimer les rendez-vous associés
+            var rendezVous = _context.RendezVous.Where(r => r.Id_patient == id).ToList();
+            if (rendezVous.Any())
+            {
+                _context.RendezVous.RemoveRange(rendezVous);
+            }
+
+            // Supprimer les visites associées et les VisiteMedicaments
+            var visites = _context.Visites.Where(v => v.PatientID == id).ToList();
+            foreach (var visite in visites)
+            {
+                var visiteMedicaments = _context.VisiteMedicaments.Where(vm => vm.VisiteId == visite.IdVisite).ToList();
+                if (visiteMedicaments.Any())
+                {
+                    _context.VisiteMedicaments.RemoveRange(visiteMedicaments);
+                }
+                _context.Visites.Remove(visite);
+            }
+
+            // Supprimer le patient
             _context.Patients.Remove(patient);
-            _context.SaveChanges();
-            return Ok();
+            await _context.SaveChangesAsync();
+
+            return Ok($"Patient avec ID {id} et ses rendez-vous et visites associés ont été supprimés.");
         }
 
         [HttpPut("{id:int}")]
@@ -57,7 +83,7 @@ namespace gestionHopital.Controllers
             if (patient is null)
                 return NotFound();
 
-            // Update fields
+            // Mise à jour des champs
             if (updatedPatientDto.DateNaissance.HasValue)
                 patient.Utilisateur.DateNaissance = updatedPatientDto.DateNaissance.Value;
 
@@ -78,7 +104,6 @@ namespace gestionHopital.Controllers
             patient.Adresse = updatedPatientDto.Adresse;
             patient.Historiquemedical = updatedPatientDto.HistoriqueMedical;
 
-
             await _context.SaveChangesAsync();
             return Ok("Patient updated successfully");
         }
@@ -96,7 +121,7 @@ namespace gestionHopital.Controllers
         public string HistoriqueMedical { get; set; }
 
         [Required]
-        public string Genre { get; set; }  
+        public string Genre { get; set; }
         public string? Password { get; set; }
     }
 }

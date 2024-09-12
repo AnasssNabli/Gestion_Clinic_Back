@@ -155,6 +155,29 @@ namespace gestionHopital.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("VisiteMedicament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MedicamentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VisiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicamentID");
+
+                    b.HasIndex("VisiteId");
+
+                    b.ToTable("VisiteMedicaments");
+                });
+
             modelBuilder.Entity("gestionHopital.Models.Admin", b =>
                 {
                     b.Property<int>("Id_admin")
@@ -224,31 +247,6 @@ namespace gestionHopital.Migrations
                     b.ToTable("Disponibilites");
                 });
 
-            modelBuilder.Entity("gestionHopital.Models.Facture", b =>
-                {
-                    b.Property<int>("Id_Facture")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Facture"));
-
-                    b.Property<decimal>("Montant")
-                        .HasPrecision(16, 2)
-                        .HasColumnType("decimal(16,2)");
-
-                    b.Property<bool>("Paiement")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PatientID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id_Facture");
-
-                    b.HasIndex("PatientID");
-
-                    b.ToTable("Factures");
-                });
-
             modelBuilder.Entity("gestionHopital.Models.Medecin", b =>
                 {
                     b.Property<int>("Id_medecin")
@@ -284,10 +282,6 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_medicament"));
 
-                    b.Property<string>("Dosage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Instructions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -299,97 +293,6 @@ namespace gestionHopital.Migrations
                     b.HasKey("Id_medicament");
 
                     b.ToTable("Medicaments");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.Message", b =>
-                {
-                    b.Property<int>("ID_Message")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Message"));
-
-                    b.Property<string>("Contenu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateEnvoi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DestinataireID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DestinataireMédecinId_medecin")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DestinatairePatientId_patient")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ExpediteurMédecinId_medecin")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ExpediteurPatientId_patient")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExpéditeurID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID_Message");
-
-                    b.HasIndex("DestinataireMédecinId_medecin");
-
-                    b.HasIndex("DestinatairePatientId_patient");
-
-                    b.HasIndex("ExpediteurMédecinId_medecin");
-
-                    b.HasIndex("ExpediteurPatientId_patient");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.Ordonnance", b =>
-                {
-                    b.Property<int>("Id_Ordonnance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Ordonnance"));
-
-                    b.Property<int>("VisiteID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id_Ordonnance");
-
-                    b.HasIndex("VisiteID")
-                        .IsUnique();
-
-                    b.ToTable("Ordonnances");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.OrdonnanceMedicament", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MedicamentID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdonnanceID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantite")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicamentID");
-
-                    b.HasIndex("OrdonnanceID");
-
-                    b.ToTable("OrdonnanceMedicaments");
                 });
 
             modelBuilder.Entity("gestionHopital.Models.Patient", b =>
@@ -443,6 +346,12 @@ namespace gestionHopital.Migrations
                     b.Property<int>("Id_patient")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MedecinId_medecin")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId_patient")
+                        .HasColumnType("int");
+
                     b.Property<string>("Raison")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -457,6 +366,10 @@ namespace gestionHopital.Migrations
 
                     b.HasIndex("Id_patient");
 
+                    b.HasIndex("MedecinId_medecin");
+
+                    b.HasIndex("PatientId_patient");
+
                     b.ToTable("RendezVous");
                 });
 
@@ -468,6 +381,9 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SecrétaireID"));
 
+                    b.Property<int?>("MedecinId_medecin")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Superieurid_medecin")
                         .HasColumnType("int");
 
@@ -475,6 +391,8 @@ namespace gestionHopital.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("SecrétaireID");
+
+                    b.HasIndex("MedecinId_medecin");
 
                     b.HasIndex("Superieurid_medecin");
 
@@ -577,8 +495,9 @@ namespace gestionHopital.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVisite"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MedecinID")
                         .HasColumnType("int");
@@ -586,10 +505,10 @@ namespace gestionHopital.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrdonnanceID")
+                    b.Property<int>("PatientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientID")
+                    b.Property<int>("montant")
                         .HasColumnType("int");
 
                     b.HasKey("IdVisite");
@@ -652,6 +571,25 @@ namespace gestionHopital.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("VisiteMedicament", b =>
+                {
+                    b.HasOne("gestionHopital.Models.Medicament", "Medicament")
+                        .WithMany("VisiteMedicaments")
+                        .HasForeignKey("MedicamentID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("gestionHopital.Models.Visite", "Visite")
+                        .WithMany("VisiteMedicaments")
+                        .HasForeignKey("VisiteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Medicament");
+
+                    b.Navigation("Visite");
+                });
+
             modelBuilder.Entity("gestionHopital.Models.Admin", b =>
                 {
                     b.HasOne("gestionHopital.Models.Utilisateur", "Utilisateur")
@@ -674,17 +612,6 @@ namespace gestionHopital.Migrations
                     b.Navigation("Medecin");
                 });
 
-            modelBuilder.Entity("gestionHopital.Models.Facture", b =>
-                {
-                    b.HasOne("gestionHopital.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("gestionHopital.Models.Medecin", b =>
                 {
                     b.HasOne("gestionHopital.Models.Departement", "Departement")
@@ -702,63 +629,6 @@ namespace gestionHopital.Migrations
                     b.Navigation("Departement");
 
                     b.Navigation("Utilisateur");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.Message", b =>
-                {
-                    b.HasOne("gestionHopital.Models.Medecin", "DestinataireMédecin")
-                        .WithMany()
-                        .HasForeignKey("DestinataireMédecinId_medecin");
-
-                    b.HasOne("gestionHopital.Models.Patient", "DestinatairePatient")
-                        .WithMany()
-                        .HasForeignKey("DestinatairePatientId_patient");
-
-                    b.HasOne("gestionHopital.Models.Medecin", "ExpediteurMédecin")
-                        .WithMany()
-                        .HasForeignKey("ExpediteurMédecinId_medecin");
-
-                    b.HasOne("gestionHopital.Models.Patient", "ExpediteurPatient")
-                        .WithMany()
-                        .HasForeignKey("ExpediteurPatientId_patient");
-
-                    b.Navigation("DestinataireMédecin");
-
-                    b.Navigation("DestinatairePatient");
-
-                    b.Navigation("ExpediteurMédecin");
-
-                    b.Navigation("ExpediteurPatient");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.Ordonnance", b =>
-                {
-                    b.HasOne("gestionHopital.Models.Visite", "Visite")
-                        .WithOne("Ordonnance")
-                        .HasForeignKey("gestionHopital.Models.Ordonnance", "VisiteID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Visite");
-                });
-
-            modelBuilder.Entity("gestionHopital.Models.OrdonnanceMedicament", b =>
-                {
-                    b.HasOne("gestionHopital.Models.Medicament", "Medicament")
-                        .WithMany()
-                        .HasForeignKey("MedicamentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("gestionHopital.Models.Ordonnance", "Ordonnance")
-                        .WithMany()
-                        .HasForeignKey("OrdonnanceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medicament");
-
-                    b.Navigation("Ordonnance");
                 });
 
             modelBuilder.Entity("gestionHopital.Models.Patient", b =>
@@ -786,6 +656,14 @@ namespace gestionHopital.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("gestionHopital.Models.Medecin", null)
+                        .WithMany("RendezVous")
+                        .HasForeignKey("MedecinId_medecin");
+
+                    b.HasOne("gestionHopital.Models.Patient", null)
+                        .WithMany("RendezVous")
+                        .HasForeignKey("PatientId_patient");
+
                     b.Navigation("Medecin");
 
                     b.Navigation("Patient");
@@ -793,6 +671,10 @@ namespace gestionHopital.Migrations
 
             modelBuilder.Entity("gestionHopital.Models.Secretary", b =>
                 {
+                    b.HasOne("gestionHopital.Models.Medecin", null)
+                        .WithMany("Secretaries")
+                        .HasForeignKey("MedecinId_medecin");
+
                     b.HasOne("gestionHopital.Models.Medecin", "Supérieur")
                         .WithMany()
                         .HasForeignKey("Superieurid_medecin")
@@ -828,9 +710,26 @@ namespace gestionHopital.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("gestionHopital.Models.Medecin", b =>
+                {
+                    b.Navigation("RendezVous");
+
+                    b.Navigation("Secretaries");
+                });
+
+            modelBuilder.Entity("gestionHopital.Models.Medicament", b =>
+                {
+                    b.Navigation("VisiteMedicaments");
+                });
+
+            modelBuilder.Entity("gestionHopital.Models.Patient", b =>
+                {
+                    b.Navigation("RendezVous");
+                });
+
             modelBuilder.Entity("gestionHopital.Models.Visite", b =>
                 {
-                    b.Navigation("Ordonnance");
+                    b.Navigation("VisiteMedicaments");
                 });
 #pragma warning restore 612, 618
         }

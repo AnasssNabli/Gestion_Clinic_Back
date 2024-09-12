@@ -145,6 +145,115 @@ namespace gestionHopital.Controllers
             return "unknown";
         }
 
+        private int? GetUserIdFromToken()
+        {
+            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if (string.IsNullOrEmpty(token))
+            {
+                return null;
+            }
+
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]);
+                var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = _configuration["JwtConfig:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return null;
+                }
+
+                return int.Parse(userIdClaim.Value);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        //profile 
+        [HttpGet("GetUser")]
+        public async Task<IActionResult> GetUser()
+        {
+            var idUser = GetUserIdFromToken();
+            var user = await _userManager.FindByIdAsync(idUser.ToString());
+            if (user == null)
+                return NotFound("User not found.");
+
+            return Ok(new
+            {
+                user.Id,
+                user.Nom,
+                user.Prenom,
+                user.Cin,
+                user.Telephone,
+                DateNaissance = user.DateNaissance.HasValue ? user.DateNaissance.Value.ToString("yyyy-MM-dd") : null,
+                user.Email
+            });
+        }
+
+        //updateProfil
+
+        [HttpPut("UpdateUser/{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateProfileModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+                return NotFound("User not found.");
+
+            // Mettre à jour les informations de l'utilisateur
+            user.Nom = model.Nom;
+            user.Prenom = model.Prenom;
+            user.Cin = model.Cin;
+            user.Telephone = model.Telephone;
+            user.Email = model.Email;
+            user.DateNaissance = !string.IsNullOrEmpty(model.DateNaissance) ? DateOnly.Parse(model.DateNaissance) : null;
+
+            // Si l'utilisateur a fourni un ancien et un nouveau mot de passe, on procède à la mise à jour
+            if (!string.IsNullOrEmpty(model.OldPassword) && !string.IsNullOrEmpty(model.NewPassword) && !string.IsNullOrEmpty(model.ConfirmPassword))
+            {
+                // Vérifier l'ancien mot de passe
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                if (!passwordCheck)
+                    return BadRequest("Ancien mot de passe incorrect.");
+
+                // Vérifier que le nouveau mot de passe et la confirmation correspondent
+                if (model.NewPassword != model.ConfirmPassword)
+                    return BadRequest("Le nouveau mot de passe et la confirmation ne correspondent pas.");
+
+                // Changer le mot de passe
+                var passwordChangeResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (!passwordChangeResult.Succeeded)
+                    return BadRequest(passwordChangeResult.Errors);
+            }
+
+            // Mettre à jour les autres informations de l'utilisateur
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok("User updated successfully.");
+        }
+
+
+
+
+       
+
+
         private string GenerateJwtToken(Utilisateur user)
         {
             var claims = new[]
@@ -175,7 +284,20 @@ namespace gestionHopital.Controllers
 
 
     }
+    public class UpdateProfileModel
+    {
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Cin { get; set; }
+        public string Telephone { get; set; }
+        public string Email { get; set; }
+        public string DateNaissance { get; set; }
 
+        // Champs pour le changement de mot de passe
+        public string? OldPassword { get; set; }
+        public string? NewPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
+    }
     public class RegisterModel
     {
         [Required]

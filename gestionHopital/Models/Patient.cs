@@ -27,5 +27,8 @@ namespace gestionHopital.Models
         public string Adresse { get; set; }
 
         public string Historiquemedical { get; set; }
+
+        // Navigation property for RendezVous
+        public ICollection<RendezVous> RendezVous { get; set; }
     }
 }

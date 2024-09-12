@@ -17,58 +17,42 @@ namespace gestionHopital.Data
         public DbSet<Departement> Departements { get; set; }
         public DbSet<RendezVous> RendezVous { get; set; }
         public DbSet<Visite> Visites { get; set; }
-        public DbSet<Ordonnance> Ordonnances { get; set; }
         public DbSet<Medicament> Medicaments { get; set; }
-        public DbSet<OrdonnanceMedicament> OrdonnanceMedicaments { get; set; }
-        public DbSet<Facture> Factures { get; set; }
-        public DbSet<Message> Messages { get; set; }
-
+        public DbSet<VisiteMedicament> VisiteMedicaments { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuration des relations entre Secretary et Utilisateur
+            // Configuration for Secretary and Utilisateur relationship
             modelBuilder.Entity<Secretary>()
                 .HasOne(s => s.Utilisateur)
                 .WithMany()
                 .HasForeignKey(s => s.UtilisateurID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configuration des relations entre Secretary et Medecin
+            // Configuration for Secretary and Medecin relationship
             modelBuilder.Entity<Secretary>()
                 .HasOne(s => s.Supérieur)
                 .WithMany()
-                .HasForeignKey(s => s.Superieurid_medecin) // Corrected to match property name
+                .HasForeignKey(s => s.Superieurid_medecin)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Configuration de la relation un à un entre Visite et Ordonnance
-            modelBuilder.Entity<Visite>()
-                .HasOne(v => v.Ordonnance)
-                .WithOne(o => o.Visite)
-                .HasForeignKey<Visite>(v => v.OrdonnanceID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Ordonnance>()
-                .HasOne(o => o.Visite)
-                .WithOne(v => v.Ordonnance)
-                .HasForeignKey<Ordonnance>(o => o.VisiteID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Configuration des relations entre Visite et Patient
+            // Configuration for Visite and Patient
             modelBuilder.Entity<Visite>()
                 .HasOne(v => v.Patient)
                 .WithMany()
                 .HasForeignKey(v => v.PatientID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuration des relations entre Visite et Medecin
+            // Configuration for Visite and Medecin
             modelBuilder.Entity<Visite>()
                 .HasOne(v => v.Medecin)
                 .WithMany()
                 .HasForeignKey(v => v.MedecinID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuration des relations entre Utilisateur et Patient, Medecin, Admin
+            // Configuration for Utilisateur relationships with Patient, Medecin, Admin
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.Utilisateur)
                 .WithMany()
@@ -87,7 +71,7 @@ namespace gestionHopital.Data
                 .HasForeignKey(a => a.UtilisateurID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configuration des relations entre RendezVous, Patient et Medecin
+            // Configuration for RendezVous, Patient, and Medecin relationships
             modelBuilder.Entity<RendezVous>()
                 .HasOne(r => r.Patient)
                 .WithMany()
@@ -100,12 +84,25 @@ namespace gestionHopital.Data
                 .HasForeignKey(r => r.Id_Medecin)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuration des relations entre Medecin et Departement
+            // Configuration for Medecin and Departement
             modelBuilder.Entity<Medecin>()
-               .HasOne(m => m.Departement)
-               .WithMany()
-               .HasForeignKey(m => m.DepartementID)
-               .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(m => m.Departement)
+                .WithMany()
+                .HasForeignKey(m => m.DepartementID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuration for VisiteMedicament
+            modelBuilder.Entity<VisiteMedicament>()
+                .HasOne(vm => vm.Visite)
+                .WithMany(v => v.VisiteMedicaments)
+                .HasForeignKey(vm => vm.VisiteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VisiteMedicament>()
+                .HasOne(vm => vm.Medicament)
+                .WithMany(m => m.VisiteMedicaments)
+                .HasForeignKey(vm => vm.MedicamentID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
