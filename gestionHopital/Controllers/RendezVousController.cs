@@ -123,7 +123,7 @@ public class RendezVousController : ControllerBase
     }
 
     [HttpPost("GetFilteredDisponibilite")]
-    public async Task<ActionResult<IEnumerable<Disponibilite>>> GetFilteredDisponibilite([FromBody] DisponibiliteRequestDto request)
+    public async Task<ActionResult<DisponibiliteResponse>> GetFilteredDisponibilite([FromBody] DisponibiliteRequestDto request)
     {
         // Helper method to preprocess and validate input time strings
         string preprocessTime(string time) => time.Replace('.', ':');
@@ -140,6 +140,7 @@ public class RendezVousController : ControllerBase
             return time.Add(TimeSpan.FromHours(hours));
         }
 
+        // Retrieve availability and appointments based on the request
         var disponibilites = await _context.Disponibilites
             .Where(d => d.Id_Medecin == request.Id_Medecin && d.JourDeLaSemaine == request.JourDeLaSemaine)
             .ToListAsync();
@@ -148,70 +149,16 @@ public class RendezVousController : ControllerBase
             .Where(r => r.Id_Medecin == request.Id_Medecin && r.Date == request.Date && r.Statut == "Planifie")
             .ToListAsync();
 
-        var filteredDisponibilites = new List<Disponibilite>();
-
-        foreach (var dispo in disponibilites)
+        // Create the response object
+        var response = new DisponibiliteResponse
         {
-            if (TryParseTime(dispo.HeureDebut, out var dispoHeureDebut) &&
-                TryParseTime(dispo.HeureFin, out var dispoHeureFin))
-            {
-                var currentStart = dispoHeureDebut;
-                var currentEnd = dispoHeureFin;
+            Disponibilites = disponibilites,
+            RendezVous = rendezVous
+        };
 
-                var newSlots = new List<Disponibilite>();
-
-                foreach (var rdv in rendezVous)
-                {
-                    if (TryParseTime(rdv.Heure, out var rdvTime))
-                    {
-                        var rdvEndTime = AddHours(rdvTime, 1);
-
-                        if (rdvTime < currentEnd && rdvEndTime > currentStart)
-                        {
-                            if (currentStart == rdvTime)
-                            {
-                                currentStart = rdvEndTime;
-                            }
-                            else
-                            {
-                                if (currentStart < rdvTime)
-                                {
-                                    newSlots.Add(new Disponibilite
-                                    {
-                                        Id_Medecin = dispo.Id_Medecin,
-                                        JourDeLaSemaine = dispo.JourDeLaSemaine,
-                                        HeureDebut = currentStart.ToString(@"hh\:mm"),
-                                        HeureFin = rdvTime.ToString(@"hh\:mm")
-                                    });
-                                }
-
-                                currentStart = rdvEndTime;
-                            }
-                        }
-                    }
-                }
-
-                if (currentStart < currentEnd)
-                {
-                    newSlots.Add(new Disponibilite
-                    {
-                        Id_Medecin = dispo.Id_Medecin,
-                        JourDeLaSemaine = dispo.JourDeLaSemaine,
-                        HeureDebut = currentStart.ToString(@"hh\:mm"),
-                        HeureFin = currentEnd.ToString(@"hh\:mm")
-                    });
-                }
-
-                filteredDisponibilites.AddRange(newSlots);
-            }
-            else
-            {
-                return BadRequest("Invalid time format in availability data.");
-            }
-        }
-
-        return Ok(filteredDisponibilites);
+        return Ok(response);
     }
+
 
     [HttpPut("UpdateStatut/{id}")]
     public async Task<IActionResult> UpdateRendezVousStatut(int id, [FromBody] string statut)
@@ -342,4 +289,9 @@ public class DisponibiliteRequestDto
     public string JourDeLaSemaine { get; set; }
     public string Date { get; set; }
     public int Id_Medecin { get; set; }
+}
+public class DisponibiliteResponse
+{
+    public IEnumerable<Disponibilite> Disponibilites { get; set; }
+    public IEnumerable<RendezVous> RendezVous { get; set; }
 }

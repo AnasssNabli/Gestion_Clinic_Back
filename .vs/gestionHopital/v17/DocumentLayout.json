@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\rendezvouscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\controllers\\rendezvouscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\disponibilitecontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\controllers\\disponibilitecontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\models\\medecin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\models\\medecin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\visitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\controllers\\visitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\rendezvouscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\controllers\\rendezvouscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -53,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\gestionhopital.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
       "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\gestionhopital.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\controllers\\disponibilitecontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|solutionrelative:gestionhopital\\controllers\\disponibilitecontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9F76E1D3-85AC-43F9-BA3C-79ADECD69BDF}|gestionHopital\\gestionHopital.csproj|c:\\users\\ahmed soubai\\source\\repos\\gestionhopital\\gestion_clinic_back\\gestionhopital\\models\\rendezvous.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -146,15 +146,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 14,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "VisiteController.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\VisiteController.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\VisiteController.cs",
@@ -162,12 +166,7 @@
               "RelativeToolTip": "gestionHopital\\Controllers\\VisiteController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-12T16:36:01.777Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "WhenOpened": "2024-09-12T16:36:01.777Z"
             },
             {
               "$type": "Document",
@@ -183,7 +182,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Patient.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Patient.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Patient.cs",
@@ -195,7 +194,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "gestionHopital.http",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\gestionHopital.http",
               "RelativeDocumentMoniker": "gestionHopital\\gestionHopital.http",
@@ -243,13 +242,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "RendezVousController.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\RendezVousController.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\RendezVousController.cs",
               "ToolTip": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\RendezVousController.cs",
               "RelativeToolTip": "gestionHopital\\Controllers\\RendezVousController.cs",
-              "ViewState": "AQIAAEoBAAAAAAAAAAAuwFYBAAAkAAAA",
+              "ViewState": "AQIAAHMAAAAAAAAAAAAAAIwAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-28T12:33:39.102Z",
               "EditorCaption": ""
@@ -268,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\AuthController.cs",
@@ -276,20 +275,20 @@
               "RelativeToolTip": "gestionHopital\\Controllers\\AuthController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-04T15:55:14Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-04T15:55:14Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 1,
               "Title": "DisponibiliteController .cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\DisponibiliteController .cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\DisponibiliteController .cs",
               "ToolTip": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\DisponibiliteController .cs",
               "RelativeToolTip": "gestionHopital\\Controllers\\DisponibiliteController .cs",
-              "ViewState": "AQIAANUAAAAAAAAAAAAIwPsAAAAvAAAA",
+              "ViewState": "AQIAAMQAAAAAAAAAAADwv/sAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-03T00:01:01.011Z"
+              "WhenOpened": "2024-08-03T00:01:01.011Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -305,13 +304,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Medecin.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Medecin.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Medecin.cs",
               "ToolTip": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Medecin.cs",
               "RelativeToolTip": "gestionHopital\\Models\\Medecin.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-02T01:37:12.289Z",
               "EditorCaption": ""
@@ -354,7 +353,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "MedecinController.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\MedecinController.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\MedecinController.cs",
@@ -362,8 +361,7 @@
               "RelativeToolTip": "gestionHopital\\Controllers\\MedecinController.cs",
               "ViewState": "AQIAAFYAAAAAAAAAAAAswGkAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-01T13:39:11.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-01T13:39:11.671Z"
             },
             {
               "$type": "Document",
@@ -379,7 +377,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "PatientController.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Controllers\\PatientController.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Controllers\\PatientController.cs",
@@ -387,8 +385,7 @@
               "RelativeToolTip": "gestionHopital\\Controllers\\PatientController.cs",
               "ViewState": "AQIAAB0AAAAAAAAAAAAswCsAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T20:24:57.674Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T20:24:57.674Z"
             },
             {
               "$type": "Document",
@@ -503,7 +500,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Disponibilite.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Disponibilite.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Disponibilite.cs",
@@ -515,7 +512,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Data\\ApplicationDbContext.cs",
@@ -527,7 +524,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Visite.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Visite.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Visite.cs",
@@ -535,12 +532,11 @@
               "RelativeToolTip": "gestionHopital\\Models\\Visite.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-22T00:01:36.361Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-22T00:01:36.361Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Medicament.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\Medicament.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\Medicament.cs",
@@ -552,7 +548,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "VisiteMedicament.cs",
               "DocumentMoniker": "C:\\Users\\Ahmed soubai\\source\\repos\\gestionHopital\\Gestion_Clinic_Back\\gestionHopital\\Models\\VisiteMedicament.cs",
               "RelativeDocumentMoniker": "gestionHopital\\Models\\VisiteMedicament.cs",
